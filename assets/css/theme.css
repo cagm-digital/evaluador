@@ -146,6 +146,16 @@ body {
     vertical-align: middle;
 }
 
+/* Modal surface */
+.modal {
+    --bs-modal-bg: var(--md-sys-color-surface-container);
+    --bs-modal-color: var(--md-sys-color-on-surface);
+    --bs-modal-border-color: var(--md-sys-color-outline-variant);
+    --bs-modal-border-radius: var(--md-shape-xl);
+    --bs-modal-header-border-color: var(--md-sys-color-outline-variant);
+    --bs-modal-footer-border-color: var(--md-sys-color-outline-variant);
+}
+
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
         animation-duration: .01ms !important;

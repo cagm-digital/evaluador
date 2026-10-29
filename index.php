@@ -3,6 +3,17 @@ declare(strict_types=1);
 
 require __DIR__ . '/includes/config.php';
 require __DIR__ . '/includes/functions.php';
+
+startSecureSession();
+
+// No-JS fallback: the form posts to this same page.
+$outcome = ['errors' => [], 'values' => ['p1' => '', 'p2' => '', 'p3' => ''], 'result' => null];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $outcome = handleCalculation($_POST);
+}
+$errors = $outcome['errors'];
+$values = $outcome['values'];
+
 require __DIR__ . '/includes/header.php';
 ?>
 <main id="main-content" class="container-fluid py-4" tabindex="-1">
@@ -29,14 +40,59 @@ require __DIR__ . '/includes/header.php';
         <section id="calculadora" class="col-12 col-lg-7" aria-labelledby="calc-title">
             <div class="glass bento-card h-100">
                 <h2 class="h5" id="calc-title">Calculadora</h2>
-                <p class="text-body-secondary mb-0">El formulario llega en la Fase 4.</p>
+                <form id="calc-form" method="post" action="index.php#resultado" novalidate>
+                    <input type="hidden" name="csrf_token" value="<?= e(csrfToken()) ?>">
+
+                    <div id="form-error" class="alert alert-danger" role="alert" <?= isset($errors['form']) ? '' : 'hidden' ?>>
+                        <?= e($errors['form'] ?? '') ?>
+                    </div>
+
+                    <div class="row g-3">
+                        <?php foreach (['p1' => 'Período 1', 'p2' => 'Período 2', 'p3' => 'Período 3'] as $field => $label): ?>
+                            <div class="col-12 col-sm-4">
+                                <label for="<?= $field ?>" class="form-label"><?= $label ?> (20%)</label>
+                                <input type="number" class="form-control<?= isset($errors[$field]) ? ' is-invalid' : '' ?>"
+                                       id="<?= $field ?>" name="<?= $field ?>"
+                                       value="<?= e($values[$field]) ?>"
+                                       step="0.1" min="<?= MIN_GRADE ?>" max="<?= MAX_GRADE ?>"
+                                       inputmode="decimal" required
+                                       aria-describedby="<?= $field ?>-help <?= $field ?>-error"
+                                       <?= isset($errors[$field]) ? 'aria-invalid="true"' : '' ?>>
+                                <div id="<?= $field ?>-help" class="form-text">Entre <?= number_format(MIN_GRADE, 1) ?> y <?= number_format(MAX_GRADE, 1) ?></div>
+                                <div id="<?= $field ?>-error" class="invalid-feedback"><?= e($errors[$field] ?? '') ?></div>
+                            </div>
+                        <?php endforeach; ?>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-2 mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <span class="material-symbols-outlined" aria-hidden="true">calculate</span> Calcular
+                        </button>
+                        <button type="reset" class="btn btn-outline-secondary btn-lg" id="calc-reset">Limpiar</button>
+                    </div>
+                </form>
             </div>
         </section>
 
         <section id="resultado" class="col-12 col-lg-5" aria-labelledby="result-title">
             <div class="glass bento-card h-100">
-                <h2 class="h5" id="result-title">Resultado</h2>
-                <p class="text-body-secondary mb-0">Aquí verás la nota mínima del período 4.</p>
+                <div class="d-flex align-items-start justify-content-between gap-2 mb-2">
+                    <h2 class="h5 mb-0" id="result-title">Resultado</h2>
+                    <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal"
+                            data-bs-target="#formula-modal">
+                        <span class="material-symbols-outlined" aria-hidden="true">help</span> ¿Cómo se calcula?
+                    </button>
+                </div>
+                <div id="result-region" role="status" aria-live="polite">
+                    <?php if ($outcome['result'] !== null): ?>
+                        <?= renderResult($outcome['result']) ?>
+                    <?php else: ?>
+                        <p class="text-body-secondary mb-0">Aquí verás la nota mínima del período 4.</p>
+                    <?php endif; ?>
+                </div>
+                <div id="result-detail">
+                    <?= $outcome['result'] !== null ? renderBreakdown($outcome['result']) : '' ?>
+                </div>
             </div>
         </section>
 
@@ -55,4 +111,35 @@ require __DIR__ . '/includes/header.php';
         </section>
     </div>
 </main>
+
+<?php
+$weightText = static fn (float $w): string => rtrim(rtrim(number_format($w, 2, '.', ''), '0'), '.');
+$example = calculateMinimumGrade(3.5, 3.0, 4.0);
+$passing = number_format(PASSING_GRADE, 1);
+?>
+<div class="modal fade" id="formula-modal" tabindex="-1" aria-labelledby="formula-title" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title h5" id="formula-title">¿Cómo se calcula?</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <p>Cada período aporta un porcentaje de la nota final. Los períodos 1, 2 y 3 valen <?= (int) round(PERIOD_WEIGHTS[0] * 100) ?>% cada uno y el período 4 vale <?= (int) round(PERIOD_WEIGHTS[3] * 100) ?>%.</p>
+                <p class="formula">
+                    N4 = (<?= $passing ?> &minus; <?= $weightText(PERIOD_WEIGHTS[0]) ?> &times; (N1 + N2 + N3)) &divide; <?= $weightText(PERIOD_WEIGHTS[3]) ?>
+                </p>
+                <p class="mb-1"><strong>Ejemplo</strong> con 3.5, 3.0 y 4.0:</p>
+                <ul>
+                    <li>Acumulado: <?= $weightText(PERIOD_WEIGHTS[0]) ?> &times; 10.5 = <?= fmt($example['accumulated']) ?></li>
+                    <li>Mínima en el período 4: (<?= $passing ?> &minus; <?= fmt($example['accumulated']) ?>) &divide; <?= $weightText(PERIOD_WEIGHTS[3]) ?> = <?= fmt($example['required']) ?></li>
+                </ul>
+                <p class="mb-0">Si el resultado es 0 o menos, ya aprobaste. Si supera <?= number_format(MAX_GRADE, 1) ?>, no es posible aprobar.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Entendido</button>
+            </div>
+        </div>
+    </div>
+</div>
 <?php require __DIR__ . '/includes/footer.php'; ?>

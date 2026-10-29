@@ -125,3 +125,78 @@ section[id] {
     color: var(--md-sys-color-on-secondary-container);
     font: var(--md-type-label);
 }
+
+/* Calculator result */
+.result-status {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+    margin-bottom: 1rem;
+    padding: .375rem 1rem;
+    border-radius: var(--md-shape-full);
+    font: var(--md-type-label);
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+}
+
+.result-status[data-status="approved"] {
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+}
+
+.result-status[data-status="unreachable"] {
+    border: 1px solid var(--md-sys-color-error);
+    background: transparent;
+    color: var(--md-sys-color-error);
+}
+
+.result-value {
+    font: var(--md-type-display);
+    color: var(--md-sys-color-primary);
+    margin-bottom: 1rem;
+}
+
+/* Result entrance (disabled globally by prefers-reduced-motion in theme.css) */
+.result-enter {
+    animation: result-in .35s ease-out both;
+}
+
+@keyframes result-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: none; }
+}
+
+/* Breakdown table */
+.result-table {
+    --bs-table-bg: transparent;
+    --bs-table-color: var(--md-sys-color-on-surface);
+    --bs-table-border-color: var(--md-sys-color-outline-variant);
+    font-size: .9375rem;
+}
+
+.result-table caption {
+    padding-inline: 0;
+    color: var(--md-sys-color-on-surface-variant);
+}
+
+.result-table .row-target th,
+.result-table .row-target td {
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+    font-weight: 500;
+}
+
+.result-table tfoot th,
+.result-table tfoot td {
+    font-weight: 500;
+}
+
+/* Formula in the modal */
+.formula {
+    padding: .75rem 1rem;
+    border-radius: var(--md-shape-md);
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+    font-weight: 500;
+    overflow-x: auto;
+}
