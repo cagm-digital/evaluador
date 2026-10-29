@@ -38,7 +38,7 @@
                 aria-controls="sidebar" aria-label="Abrir menú de navegación">
             <span class="material-symbols-outlined" aria-hidden="true">menu</span>
         </button>
-        <img src="<?= e(asset('img/escudo-96.png')) ?>" width="44" height="44"
+        <img src="<?= e(asset('img/escudo-192.png')) ?>" width="64" height="64" class="app-crest"
              alt="Escudo del <?= e(INSTITUTION_NAME) ?>">
         <div class="flex-grow-1 min-w-0">
             <p class="mb-0 fw-medium lh-sm"><?= e(APP_NAME) ?></p>
@@ -69,9 +69,6 @@
                 </a>
                 <a class="nav-link" href="#resultado">
                     <span class="material-symbols-outlined" aria-hidden="true">fact_check</span> Resultado
-                </a>
-                <a class="nav-link" href="#institucion">
-                    <span class="material-symbols-outlined" aria-hidden="true">school</span> Institución
                 </a>
             </nav>
         </div>

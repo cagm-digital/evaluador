@@ -47,7 +47,7 @@
 /* Shell: sidebar + content */
 .app-shell {
     display: flex;
-    min-height: calc(100vh - 69px);
+    min-height: calc(100vh - 81px);
 }
 
 .app-content {
@@ -87,9 +87,9 @@
     .app-shell > .sidebar {
         flex: 0 0 272px;
         position: sticky;
-        top: 69px;
+        top: 81px;
         align-self: flex-start;
-        height: calc(100vh - 69px);
+        height: calc(100vh - 81px);
         overflow-y: auto;
         border-right: 1px solid var(--md-sys-color-outline-variant) !important;
     }

@@ -21,8 +21,8 @@ require __DIR__ . '/includes/header.php';
     <div class="row g-3">
         <section id="bienvenida" class="col-12 col-xl-8" aria-labelledby="welcome-title">
             <div class="glass bento-card h-100">
-                <h1 class="h3" id="welcome-title">Bienvenido a <?= e(APP_NAME) ?></h1>
-                <p class="mb-0">Ingresa tus notas de los períodos 1, 2 y 3 para conocer la nota mínima que necesitas en el período 4 y aprobar con <?= number_format(PASSING_GRADE, 1) ?>.</p>
+                <h1 class="h3" id="welcome-title"><?= e(APP_NAME) ?> de próxima nota</h1>
+                <p class="mb-0">Ingresa tus notas de los períodos 1, 2 y 3 para conocer la nota mínima que necesitas en el período 4 y conseguir aprobar con nota de <?= number_format(PASSING_GRADE, 1) ?>.</p>
             </div>
         </section>
 
@@ -111,19 +111,6 @@ require __DIR__ . '/includes/header.php';
             </div>
         </section>
 
-        <section id="institucion" class="col-12" aria-labelledby="inst-title">
-            <div class="glass bento-card">
-                <h2 class="h5" id="inst-title"><?= e(INSTITUTION_NAME) ?></h2>
-                <dl class="row mb-0">
-                    <dt class="col-sm-3">Especialidad</dt>
-                    <dd class="col-sm-9"><?= e(SPECIALTY) ?></dd>
-                    <dt class="col-sm-3">Programa</dt>
-                    <dd class="col-sm-9"><?= e(PROGRAM) ?></dd>
-                    <dt class="col-sm-3">Docente</dt>
-                    <dd class="col-sm-9 mb-0"><?= e(TEACHER) ?></dd>
-                </dl>
-            </div>
-        </section>
     </div>
 </main>
 
