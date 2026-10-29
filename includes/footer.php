@@ -1,7 +1,13 @@
-        <footer class="app-footer mt-4 py-4">
-            <div class="container-fluid small text-body-secondary">
-                <p class="mb-1">Especialidad <?= e(SPECIALTY) ?> - <?= e(PROGRAM) ?></p>
-                <p class="mb-0">Docente: <?= e(TEACHER) ?> · &copy; <?= date('Y') ?> <?= e(INSTITUTION_NAME) ?></p>
+        <footer class="app-footer mt-4 pb-4">
+            <div class="footer-card glass text-center">
+                <p class="footer-title mb-3">
+                    <span class="material-symbols-outlined" aria-hidden="true">code</span>
+                    Especialidad <?= e(SPECIALTY) ?> - <?= e(PROGRAM) ?>
+                </p>
+                <ul class="footer-chips list-unstyled mb-0">
+                    <li><span class="material-symbols-outlined" aria-hidden="true">school</span> Docente: <?= e(TEACHER) ?></li>
+                    <li><span class="material-symbols-outlined" aria-hidden="true">copyright</span> <?= date('Y') ?> <?= e(INSTITUTION_NAME) ?></li>
+                </ul>
             </div>
         </footer>
     </div><!-- /.app-content -->

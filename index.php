@@ -20,7 +20,8 @@ require __DIR__ . '/includes/header.php';
 <main id="main-content" class="container-fluid py-4" tabindex="-1">
     <div class="row g-3">
         <section id="bienvenida" class="col-12 col-xl-8" aria-labelledby="welcome-title">
-            <div class="glass bento-card h-100">
+            <div class="glass bento-card hero h-100">
+                <span class="material-symbols-outlined hero-icon" aria-hidden="true">rocket_launch</span>
                 <h1 class="h3" id="welcome-title"><?= e(APP_NAME) ?> de próxima nota</h1>
                 <p class="mb-0">Ingresa tus notas de los períodos 1, 2 y 3 para conocer la nota mínima que necesitas en el período 4 y conseguir aprobar con nota de <?= number_format(PASSING_GRADE, 1) ?>.</p>
             </div>

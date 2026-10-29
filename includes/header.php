@@ -38,10 +38,10 @@
                 aria-controls="sidebar" aria-label="Abrir menú de navegación">
             <span class="material-symbols-outlined" aria-hidden="true">menu</span>
         </button>
-        <img src="<?= e(asset('img/escudo-192.png')) ?>" width="64" height="64" class="app-crest"
+        <img src="<?= e(asset('img/escudo-192.png')) ?>" width="80" height="80" class="app-crest"
              alt="Escudo del <?= e(INSTITUTION_NAME) ?>">
         <div class="flex-grow-1 min-w-0">
-            <p class="mb-0 fw-medium lh-sm"><?= e(APP_NAME) ?></p>
+            <p class="app-name mb-0 lh-sm"><?= e(APP_NAME) ?></p>
             <p class="mb-0 small text-body-secondary lh-sm d-none d-sm-block"><?= e(INSTITUTION_NAME) ?></p>
         </div>
         <button type="button" class="icon-btn" id="theme-toggle" aria-label="Cambiar a modo oscuro">
