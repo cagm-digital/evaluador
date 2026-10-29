@@ -1,6 +1,6 @@
         <footer class="app-footer mt-4 py-4">
             <div class="container-fluid small text-body-secondary">
-                <p class="mb-1">Especialidad: <?= e(SPECIALTY) ?> · Programa: <?= e(PROGRAM) ?></p>
+                <p class="mb-1">Especialidad <?= e(SPECIALTY) ?> - <?= e(PROGRAM) ?></p>
                 <p class="mb-0">Docente: <?= e(TEACHER) ?> · &copy; <?= date('Y') ?> <?= e(INSTITUTION_NAME) ?></p>
             </div>
         </footer>

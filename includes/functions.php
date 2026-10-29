@@ -126,7 +126,8 @@ function calculateMinimumGrade(float $p1, float $p2, float $p3): array
     $raw = (PASSING_GRADE - $accumulated) / PERIOD_WEIGHTS[3];
     $epsilon = 1e-9;
 
-    if ($raw <= $epsilon) {
+    // Passing even with the lowest possible grade in period 4 counts as already approved.
+    if ($raw <= MIN_GRADE + $epsilon) {
         $status = 'approved';
     } elseif ($raw > MAX_GRADE + $epsilon) {
         $status = 'unreachable';

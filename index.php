@@ -41,7 +41,8 @@ require __DIR__ . '/includes/header.php';
         <section id="calculadora" class="col-12 col-lg-7" aria-labelledby="calc-title">
             <div class="glass bento-card h-100">
                 <h2 class="h5" id="calc-title">Calculadora</h2>
-                <form id="calc-form" method="post" action="index.php#resultado" novalidate>
+                <form id="calc-form" method="post" action="index.php#resultado" novalidate
+                      data-min="<?= MIN_GRADE ?>" data-max="<?= MAX_GRADE ?>">
                     <input type="hidden" name="csrf_token" value="<?= e(csrfToken()) ?>">
 
                     <div id="form-error" class="alert alert-danger" role="alert" <?= isset($errors['form']) ? '' : 'hidden' ?>>
@@ -52,11 +53,11 @@ require __DIR__ . '/includes/header.php';
                         <?php foreach (['p1' => 'Período 1', 'p2' => 'Período 2', 'p3' => 'Período 3'] as $field => $label): ?>
                             <div class="col-12 col-sm-4">
                                 <label for="<?= $field ?>" class="form-label"><?= $label ?> (20%)</label>
-                                <input type="number" class="form-control<?= isset($errors[$field]) ? ' is-invalid' : '' ?>"
+                                <?php /* type=text keeps "3,5" intact in every browser/locale; type=number drops it in some. */ ?>
+                                <input type="text" class="form-control<?= isset($errors[$field]) ? ' is-invalid' : '' ?>"
                                        id="<?= $field ?>" name="<?= $field ?>"
                                        value="<?= e($values[$field]) ?>"
-                                       step="0.1" min="<?= MIN_GRADE ?>" max="<?= MAX_GRADE ?>"
-                                       inputmode="decimal" required
+                                       inputmode="decimal" autocomplete="off" maxlength="5" required
                                        aria-describedby="<?= $field ?>-help <?= $field ?>-error"
                                        <?= isset($errors[$field]) ? 'aria-invalid="true"' : '' ?>>
                                 <div id="<?= $field ?>-help" class="form-text">Entre <?= number_format(MIN_GRADE, 1) ?> y <?= number_format(MAX_GRADE, 1) ?></div>
@@ -135,7 +136,7 @@ $passing = number_format(PASSING_GRADE, 1);
                     <li>Acumulado: <?= $weightText(PERIOD_WEIGHTS[0]) ?> &times; 10.5 = <?= fmt($example['accumulated']) ?></li>
                     <li>Mínima en el período 4: (<?= $passing ?> &minus; <?= fmt($example['accumulated']) ?>) &divide; <?= $weightText(PERIOD_WEIGHTS[3]) ?> = <?= fmt($example['required']) ?></li>
                 </ul>
-                <p class="mb-0">Si el resultado es 0 o menos, ya aprobaste. Si supera <?= number_format(MAX_GRADE, 1) ?>, no es posible aprobar.</p>
+                <p class="mb-0">Si el resultado es <?= number_format(MIN_GRADE, 1) ?> o menos, ya aprobaste, porque esa es la nota más baja posible. Si supera <?= number_format(MAX_GRADE, 1) ?>, no es posible aprobar.</p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Entendido</button>

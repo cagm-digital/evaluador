@@ -17,7 +17,7 @@ $labels = [
         <p class="mb-1">Necesitas al menos esta nota en el período 4:</p>
         <p class="result-value"><?= fmt($result['required']) ?></p>
     <?php elseif ($result['status'] === 'approved'): ?>
-        <p>Con tus notas acumuladas ya alcanzas <?= number_format(PASSING_GRADE, 1) ?>, incluso si sacas 0 en el período 4.</p>
+        <p>Con tus notas acumuladas ya alcanzas <?= number_format(PASSING_GRADE, 1) ?>, incluso si sacas <?= number_format(MIN_GRADE, 1) ?> en el período 4.</p>
     <?php else: ?>
         <p>Incluso con <?= number_format(MAX_GRADE, 1) ?> en el período 4 no llegarías a <?= number_format(PASSING_GRADE, 1) ?>.</p>
     <?php endif; ?>

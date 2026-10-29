@@ -21,14 +21,19 @@ check('3/3/3 status', $r['status'], 'reachable');
 check('5/5/5 status', calculateMinimumGrade(5, 5, 5)['status'], 'approved');
 check('5/5/5 required', calculateMinimumGrade(5, 5, 5)['required'], 0.0);
 check('1/1/1 status', calculateMinimumGrade(1, 1, 1)['status'], 'unreachable');
-check('0/0/0 status', calculateMinimumGrade(0, 0, 0)['status'], 'unreachable');
+check('5/5/3 needs exactly the minimum grade => approved', calculateMinimumGrade(5, 5, 3)['status'], 'approved');
+check('5/5/4 needs below the minimum grade => approved', calculateMinimumGrade(5, 5, 4)['status'], 'approved');
+check('5/5/2.9 just above the minimum => reachable', calculateMinimumGrade(5, 5, 2.9)['status'], 'reachable');
+check('5/5/2.9 required', calculateMinimumGrade(5, 5, 2.9)['required'], 1.05);
 check('5/5/0 boundary required', calculateMinimumGrade(5, 5, 0)['required'], 2.5);
 check('4/4/4 required', calculateMinimumGrade(4, 4, 4)['required'], 1.5);
 check('2/2/1 needs exactly 5.0', calculateMinimumGrade(2, 2, 1)['required'], 5.0);
 check('2/2/1 status', calculateMinimumGrade(2, 2, 1)['status'], 'reachable');
-check('2/2/0.9 just over 5.0', calculateMinimumGrade(2, 2, 0.9)['status'], 'unreachable');
+check('2/1.9/1 just over 5.0', calculateMinimumGrade(2, 1.9, 1)['status'], 'unreachable');
 check('1.0/1.0/1.0 accumulated', calculateMinimumGrade(1, 1, 1)['accumulated'], 0.6);
-check('5/5/5 approved even with 0', calculateMinimumGrade(5, 5, 5)['status'], 'approved');
+check('parse minimum grade "1"', parseGrade('1')[0], 1.0);
+check('parse below minimum "0.9"', parseGrade('0.9')[1] !== null, true);
+check('parse zero', parseGrade('0')[1] !== null, true);
 check('4/3/2 required', calculateMinimumGrade(4.0, 3.0, 2.0)['required'], 3.0);
 
 // parseGrade

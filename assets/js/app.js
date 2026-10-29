@@ -52,7 +52,8 @@ document.addEventListener('activate.bs.scrollspy', function (event) {
     var detail = document.getElementById('result-detail');
     var EMPTY = '<p class="text-body-secondary mb-0">Aquí verás la nota mínima del período 4.</p>';
     var formError = document.getElementById('form-error');
-    var MIN = 0, MAX = 5;
+    // Limits come from includes/config.php through data attributes.
+    var MIN = parseFloat(form.dataset.min), MAX = parseFloat(form.dataset.max);
 
     function validate(raw) {
         var text = (raw || '').trim();
