@@ -198,5 +198,5 @@ section[id] {
     background: var(--md-sys-color-secondary-container);
     color: var(--md-sys-color-on-secondary-container);
     font-weight: 500;
-    overflow-x: auto;
+    overflow-wrap: anywhere;
 }

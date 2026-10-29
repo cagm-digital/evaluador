@@ -119,10 +119,66 @@ body {
     }
 }
 
-/* Visible keyboard focus (WCAG 2.4.7). */
-:focus-visible {
+/* Visible keyboard focus (WCAG 2.4.7). Bootstrap removes outlines on some
+   components in favor of a blue box-shadow, so restate ours with equal specificity. */
+:focus-visible,
+.btn:focus-visible,
+.btn-close:focus-visible,
+.nav-link:focus-visible,
+.form-control:focus {
     outline: 3px solid var(--md-sys-color-primary);
     outline-offset: 2px;
+    box-shadow: none;
+}
+
+/* Keep focused fields clear of the sticky app bar (WCAG 2.4.11). */
+html {
+    scroll-padding-top: 85px;
+}
+
+/* Form fields: 3:1 border contrast (WCAG 1.4.11), 44px targets, accessible error color. */
+.form-control {
+    min-height: 44px;
+    border-color: var(--md-sys-color-outline);
+    --bs-form-invalid-color: var(--md-sys-color-error);
+    --bs-form-invalid-border-color: var(--md-sys-color-error);
+}
+
+.form-control.is-invalid {
+    border-color: var(--md-sys-color-error);
+}
+
+.invalid-feedback {
+    --bs-form-invalid-color: var(--md-sys-color-error);
+    font-weight: 500;
+}
+
+/* Buttons: 44px minimum target and token-based colors (Bootstrap's gray fails AA in dark mode). */
+.btn {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .5rem;
+}
+
+.btn-close {
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    background-size: 1rem;
+}
+
+.btn-outline-secondary {
+    --bs-btn-color: var(--md-sys-color-on-surface-variant);
+    --bs-btn-border-color: var(--md-sys-color-outline);
+    --bs-btn-hover-color: var(--md-sys-color-on-secondary-container);
+    --bs-btn-hover-bg: var(--md-sys-color-secondary-container);
+    --bs-btn-hover-border-color: var(--md-sys-color-outline);
+    --bs-btn-active-color: var(--md-sys-color-on-secondary-container);
+    --bs-btn-active-bg: var(--md-sys-color-secondary-container);
+    --bs-btn-active-border-color: var(--md-sys-color-outline);
+    --bs-btn-border-radius: var(--md-shape-full);
 }
 
 /* Theme toggle: 48px touch target. */

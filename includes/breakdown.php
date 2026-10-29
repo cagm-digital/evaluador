@@ -5,7 +5,7 @@ $isReachable = $result['status'] === 'reachable';
 $total = $result['accumulated'] + $result['required'] * $weights[3];
 ?>
 <div class="result-enter">
-    <div class="table-responsive">
+    <div class="table-responsive" role="region" aria-label="Desglose por período" tabindex="0">
         <table class="table result-table align-middle mb-0">
             <caption>Desglose por período</caption>
             <thead>

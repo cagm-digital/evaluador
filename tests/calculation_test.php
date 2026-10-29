@@ -6,7 +6,7 @@ require __DIR__ . '/../includes/config.php';
 require __DIR__ . '/../includes/functions.php';
 
 $failures = 0;
-function check(string $name, mixed $actual, mixed $expected): void
+function check(string $name, $actual, $expected): void
 {
     global $failures;
     $ok = $actual === $expected;

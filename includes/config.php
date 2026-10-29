@@ -1,6 +1,12 @@
 <?php
 declare(strict_types=1);
 
+// Never show PHP errors to visitors in production. Set to true only on a local machine.
+const APP_DEBUG = false;
+error_reporting(E_ALL);
+ini_set('display_errors', APP_DEBUG ? '1' : '0');
+ini_set('log_errors', '1');
+
 // Institutional data (edit here to change what the UI displays).
 const INSTITUTION_NAME = 'Instituto Técnico Superior de Pereira';
 const SPECIALTY        = 'Informática';

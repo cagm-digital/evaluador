@@ -11,10 +11,49 @@ function e(string $value): string
 
 /**
  * Build a path relative to the app root (works in subfolders on shared hosting).
+ * Appends the file modification time so long browser caching never serves stale assets.
  */
 function asset(string $path): string
 {
-    return 'assets/' . ltrim($path, '/');
+    $relative = 'assets/' . ltrim($path, '/');
+    $file = dirname(__DIR__) . '/' . $relative;
+    return is_file($file) ? $relative . '?v=' . filemtime($file) : $relative;
+}
+
+/**
+ * Per-request nonce that authorizes the inline theme script under the CSP.
+ */
+function cspNonce(): string
+{
+    static $nonce = null;
+    if ($nonce === null) {
+        $nonce = base64_encode(random_bytes(16));
+    }
+    return $nonce;
+}
+
+/**
+ * Send security headers for HTML responses (must run before any output).
+ */
+function sendSecurityHeaders(): void
+{
+    $csp = [
+        "default-src 'self'",
+        "script-src 'self' 'nonce-" . cspNonce() . "' https://cdn.jsdelivr.net",
+        "style-src 'self' https://cdn.jsdelivr.net https://fonts.googleapis.com",
+        "font-src 'self' https://fonts.gstatic.com",
+        "img-src 'self' data:",
+        "connect-src 'self'",
+        "object-src 'none'",
+        "base-uri 'self'",
+        "form-action 'self'",
+        "frame-ancestors 'self'",
+    ];
+    header('Content-Security-Policy: ' . implode('; ', $csp));
+    header('X-Content-Type-Options: nosniff');
+    header('X-Frame-Options: SAMEORIGIN');
+    header('Referrer-Policy: strict-origin-when-cross-origin');
+    header('Permissions-Policy: camera=(), microphone=(), geolocation=()');
 }
 
 /**
@@ -25,6 +64,8 @@ function startSecureSession(): void
     if (session_status() !== PHP_SESSION_NONE) {
         return;
     }
+    ini_set('session.use_strict_mode', '1');
+    ini_set('session.use_only_cookies', '1');
     session_set_cookie_params([
         'lifetime' => 0,
         'path'     => '/',
@@ -54,9 +95,10 @@ function csrfIsValid(?string $token): bool
  * Parse a grade typed by the user. Accepts "3", "3.5" or "3,5" (max 2 decimals).
  * Returns the float, or an error message in Spanish.
  *
+ * @param  mixed $raw Untyped on purpose: keeps compatibility with PHP 7.4.
  * @return array{0: ?float, 1: ?string} [value, error]
  */
-function parseGrade(mixed $raw): array
+function parseGrade($raw): array
 {
     $text = is_string($raw) ? trim($raw) : '';
     if ($text === '') {

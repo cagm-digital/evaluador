@@ -1,0 +1,53 @@
+# Evaluador - Apache configuration for cPanel shared hosting.
+# Every block is wrapped in <IfModule> so a missing module never causes a 500 error.
+
+Options -Indexes
+DirectoryIndex index.php
+
+# Block internal folders and tooling files (also protected by their own .htaccess).
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteRule ^(includes|tests|\.atl|\.git)(/|$) - [F,L]
+
+    # Optional: force HTTPS once the SSL certificate is active in cPanel.
+    # RewriteCond %{HTTPS} !=on
+    # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+<FilesMatch "\.(md|json|log|ini|sh|cache|dist|lock)$|^\.">
+    <IfModule mod_authz_core.c>
+        Require all denied
+    </IfModule>
+    <IfModule !mod_authz_core.c>
+        Order allow,deny
+        Deny from all
+    </IfModule>
+</FilesMatch>
+
+# Static-file security headers (PHP responses send theirs, including the CSP, so they are
+# excluded here to avoid duplicated headers).
+<IfModule mod_headers.c>
+    <FilesMatch "\.(css|js|png|svg|webp|ico)$">
+        Header set X-Content-Type-Options "nosniff"
+        Header set X-Frame-Options "SAMEORIGIN"
+        Header set Referrer-Policy "strict-origin-when-cross-origin"
+    </FilesMatch>
+    # Optional, enable only after HTTPS works for the whole domain:
+    # Header always set Strict-Transport-Security "max-age=31536000"
+</IfModule>
+
+# Compression
+<IfModule mod_deflate.c>
+    AddOutputFilterByType DEFLATE text/html text/plain text/css application/javascript text/javascript application/json image/svg+xml
+</IfModule>
+
+# Browser caching. Asset URLs carry ?v=<file modification time>, so long lifetimes are safe.
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 year"
+    ExpiresByType application/javascript "access plus 1 year"
+    ExpiresByType text/javascript "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType image/svg+xml "access plus 1 year"
+    ExpiresByType image/webp "access plus 1 year"
+</IfModule>

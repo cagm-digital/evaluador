@@ -1,3 +1,12 @@
+// Expose the current section to assistive tech (scrollspy only toggles a CSS class).
+document.addEventListener('activate.bs.scrollspy', function (event) {
+    document.querySelectorAll('#side-nav .nav-link').forEach(function (link) {
+        link.removeAttribute('aria-current');
+    });
+    // relatedTarget is the nav link that became active.
+    if (event.relatedTarget) event.relatedTarget.setAttribute('aria-current', 'location');
+});
+
 // Close the mobile drawer after choosing a section.
 (function () {
     var drawer = document.getElementById('sidebar');

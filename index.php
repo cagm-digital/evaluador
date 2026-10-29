@@ -5,6 +5,7 @@ require __DIR__ . '/includes/config.php';
 require __DIR__ . '/includes/functions.php';
 
 startSecureSession();
+sendSecurityHeaders();
 
 // No-JS fallback: the form posts to this same page.
 $outcome = ['errors' => [], 'values' => ['p1' => '', 'p2' => '', 'p3' => ''], 'result' => null];
