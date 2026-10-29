@@ -134,6 +134,42 @@ document.addEventListener('activate.bs.scrollspy', function (event) {
         if (first) first.focus();
     }
 
+    // "Calculating" animation: a ticker of random digits and bouncing operators while the request runs.
+    var CALC_MS = 900;
+    var calculating = false;
+    var tickTimer = null;
+    var submitButton = form.querySelector('button[type="submit"]');
+    var LOADING = '<div class="calc-loading">' +
+        '<p class="mb-1">Calculando…</p>' +
+        '<p class="result-value calc-ticker" aria-hidden="true">0.00</p>' +
+        '<p class="calc-ops" aria-hidden="true"><span>+</span><span>&minus;</span><span>&times;</span><span>&divide;</span></p>' +
+        '</div>';
+
+    function prefersReducedMotion() {
+        return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    }
+
+    function startCalculating() {
+        calculating = true;
+        submitButton.disabled = true;
+        region.setAttribute('aria-busy', 'true');
+        region.innerHTML = LOADING;
+        detail.innerHTML = '';
+        revealResult();
+        var ticker = region.querySelector('.calc-ticker');
+        if (prefersReducedMotion()) return;
+        tickTimer = setInterval(function () {
+            ticker.textContent = (MIN + Math.random() * (MAX - MIN + 1)).toFixed(2);
+        }, 70);
+    }
+
+    function stopCalculating() {
+        calculating = false;
+        clearInterval(tickTimer);
+        submitButton.disabled = false;
+        region.removeAttribute('aria-busy');
+    }
+
     form.addEventListener('submit', function (event) {
         event.preventDefault();
         clearErrors();
@@ -144,8 +180,10 @@ document.addEventListener('activate.bs.scrollspy', function (event) {
             if (message) { setError(name, message); hasErrors = true; }
         });
         if (hasErrors) { focusFirstInvalid(); return; }
+        if (calculating) return;
 
-        fetch('calculate.php', {
+        startCalculating();
+        var request = fetch('calculate.php', {
             method: 'POST',
             body: new FormData(form),
             headers: { 'Accept': 'application/json' },
@@ -153,9 +191,16 @@ document.addEventListener('activate.bs.scrollspy', function (event) {
         })
             .then(function (response) {
                 return response.json().then(function (data) { return { ok: response.ok, data: data }; });
-            })
+            });
+        // Keep the animation visible long enough to read, even when the server answers instantly.
+        var pause = new Promise(function (resolve) { setTimeout(resolve, prefersReducedMotion() ? 0 : CALC_MS); });
+
+        Promise.all([request, pause])
+            .then(function (values) { return values[0]; })
             .then(function (res) {
+                stopCalculating();
                 if (!res.ok) {
+                    region.innerHTML = EMPTY;
                     var errors = res.data.errors || {};
                     fields.forEach(function (name) { if (errors[name]) setError(name, errors[name]); });
                     if (errors.form) setFormError(errors.form);
@@ -167,6 +212,8 @@ document.addEventListener('activate.bs.scrollspy', function (event) {
                 revealResult();
             })
             .catch(function () {
+                stopCalculating();
+                region.innerHTML = EMPTY;
                 setFormError('No se pudo calcular. Revisa tu conexión e inténtalo de nuevo.');
             });
     });

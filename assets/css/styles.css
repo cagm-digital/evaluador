@@ -428,3 +428,47 @@ section[id] {
 .result-value-over {
     color: var(--md-sys-color-error);
 }
+
+/* Calculating animation */
+.calc-loading {
+    animation: result-in .25s ease-out both;
+}
+
+.calc-ticker {
+    font-variant-numeric: tabular-nums;
+    animation: ticker-pulse .5s ease-in-out infinite alternate;
+}
+
+.calc-ops {
+    display: flex;
+    gap: .75rem;
+    margin: 0;
+    font-size: 1.75rem;
+    font-weight: 900;
+    color: var(--md-sys-color-primary);
+}
+
+.calc-ops span {
+    display: inline-grid;
+    place-items: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--md-shape-full);
+    background: var(--md-sys-color-tertiary-container);
+    color: var(--md-sys-color-on-tertiary-container);
+    animation: op-bounce .6s cubic-bezier(.34, 1.56, .64, 1) infinite alternate;
+}
+
+.calc-ops span:nth-child(2) { animation-delay: .1s; }
+.calc-ops span:nth-child(3) { animation-delay: .2s; }
+.calc-ops span:nth-child(4) { animation-delay: .3s; }
+
+@keyframes op-bounce {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-10px); }
+}
+
+@keyframes ticker-pulse {
+    from { opacity: .55; }
+    to   { opacity: 1; }
+}
