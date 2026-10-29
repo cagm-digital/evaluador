@@ -73,6 +73,52 @@ document.addEventListener('activate.bs.scrollspy', function (event) {
         else input.removeAttribute('aria-invalid');
     }
 
+    // Stepper: +/-0.1 within [MIN, MAX]. Keeps the user's decimal separator.
+    var STEP = 0.1;
+
+    function parseValue(text) {
+        var t = (text || '').trim().replace(',', '.');
+        return /^\d+(\.\d{1,2})?$/.test(t) ? parseFloat(t) : null;
+    }
+
+    function syncAria(input) {
+        var value = parseValue(input.value);
+        if (value === null) input.removeAttribute('aria-valuenow');
+        else input.setAttribute('aria-valuenow', String(value));
+    }
+
+    function stepField(name, direction) {
+        var input = document.getElementById(name);
+        var raw = input.value.trim();
+        var current = parseValue(raw);
+        var next = current === null ? MIN : current + direction * STEP;
+        next = Math.min(MAX, Math.max(MIN, Math.round(next * 100) / 100));
+        var text = Math.round(next * 10) / 10 === next ? next.toFixed(1) : next.toFixed(2);
+        if (raw.indexOf(',') !== -1) text = text.replace('.', ',');
+        input.value = text;
+        syncAria(input);
+        setError(name, '');
+    }
+
+    fields.forEach(function (name) {
+        var input = document.getElementById(name);
+        syncAria(input);
+        input.addEventListener('input', function () { syncAria(input); });
+        input.addEventListener('keydown', function (event) {
+            if (event.key !== 'ArrowUp' && event.key !== 'ArrowDown') return;
+            event.preventDefault();
+            stepField(name, event.key === 'ArrowUp' ? 1 : -1);
+        });
+    });
+
+    form.querySelectorAll('.stepper-btn').forEach(function (button) {
+        // Keep focus in the field while using the arrows with a mouse.
+        button.addEventListener('mousedown', function (event) { event.preventDefault(); });
+        button.addEventListener('click', function () {
+            stepField(button.dataset.field, Number(button.dataset.step));
+        });
+    });
+
     function setFormError(message) {
         formError.textContent = message;
         formError.hidden = !message;
@@ -129,6 +175,7 @@ document.addEventListener('activate.bs.scrollspy', function (event) {
         clearErrors();
         region.innerHTML = EMPTY;
         detail.innerHTML = '';
+        fields.forEach(function (name) { document.getElementById(name).removeAttribute('aria-valuenow'); });
     });
 
     // On narrow screens the result sits below the form: bring it into view.

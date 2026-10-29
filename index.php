@@ -53,13 +53,26 @@ require __DIR__ . '/includes/header.php';
                         <?php foreach (['p1' => 'Período 1', 'p2' => 'Período 2', 'p3' => 'Período 3'] as $field => $label): ?>
                             <div class="col-12 col-sm-4">
                                 <label for="<?= $field ?>" class="form-label"><?= $label ?> (20%)</label>
-                                <?php /* type=text keeps "3,5" intact in every browser/locale; type=number drops it in some. */ ?>
-                                <input type="text" class="form-control<?= isset($errors[$field]) ? ' is-invalid' : '' ?>"
-                                       id="<?= $field ?>" name="<?= $field ?>"
-                                       value="<?= e($values[$field]) ?>"
-                                       inputmode="decimal" autocomplete="off" maxlength="5" required
-                                       aria-describedby="<?= $field ?>-help <?= $field ?>-error"
-                                       <?= isset($errors[$field]) ? 'aria-invalid="true"' : '' ?>>
+                                <?php /* type=text keeps "3,5" intact in every browser/locale (type=number drops it in some),
+                                         so the arrows are custom buttons and the field is exposed as a spinbutton. */ ?>
+                                <div class="stepper">
+                                    <input type="text" class="form-control<?= isset($errors[$field]) ? ' is-invalid' : '' ?>"
+                                           id="<?= $field ?>" name="<?= $field ?>"
+                                           value="<?= e($values[$field]) ?>"
+                                           role="spinbutton" aria-valuemin="<?= MIN_GRADE ?>" aria-valuemax="<?= MAX_GRADE ?>"
+                                           inputmode="decimal" autocomplete="off" maxlength="5" required
+                                           aria-describedby="<?= $field ?>-help <?= $field ?>-error"
+                                           <?= isset($errors[$field]) ? 'aria-invalid="true"' : '' ?>>
+                                    <?php /* Mouse/touch only: keyboard and screen-reader users use ArrowUp/ArrowDown on the field. */ ?>
+                                    <div class="stepper-btns" aria-hidden="true">
+                                        <button type="button" tabindex="-1" class="stepper-btn" data-field="<?= $field ?>" data-step="1">
+                                            <span class="material-symbols-outlined">keyboard_arrow_up</span>
+                                        </button>
+                                        <button type="button" tabindex="-1" class="stepper-btn" data-field="<?= $field ?>" data-step="-1">
+                                            <span class="material-symbols-outlined">keyboard_arrow_down</span>
+                                        </button>
+                                    </div>
+                                </div>
                                 <div id="<?= $field ?>-help" class="form-text">Entre <?= number_format(MIN_GRADE, 1) ?> y <?= number_format(MAX_GRADE, 1) ?></div>
                                 <div id="<?= $field ?>-error" class="invalid-feedback"><?= e($errors[$field] ?? '') ?></div>
                             </div>
