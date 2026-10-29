@@ -1,0 +1,127 @@
+/* Layout and component styles. Tokens live in theme.css. */
+
+.skip-link:focus {
+    position: fixed;
+    top: .5rem;
+    left: .5rem;
+    z-index: 2000;
+    padding: .5rem 1rem;
+    background: var(--md-sys-color-surface);
+    color: var(--md-sys-color-on-surface);
+}
+
+.min-w-0 {
+    min-width: 0;
+}
+
+/* Top app bar */
+.app-bar {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    border-radius: 0;
+    border-width: 0 0 1px;
+    box-shadow: none;
+}
+
+.icon-btn {
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+    display: inline-grid;
+    place-items: center;
+    border: 1px solid transparent;
+    border-radius: var(--md-shape-full);
+    background: transparent;
+    color: var(--md-sys-color-on-surface);
+}
+
+.icon-btn:hover {
+    background: var(--md-sys-color-secondary-container);
+}
+
+#theme-toggle {
+    border-color: var(--md-sys-color-outline);
+}
+
+/* Shell: sidebar + content */
+.app-shell {
+    display: flex;
+    min-height: calc(100vh - 69px);
+}
+
+.app-content {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding-inline: .5rem;
+}
+
+.sidebar-inner {
+    height: 100%;
+    background: var(--md-sys-color-surface-container);
+    color: var(--md-sys-color-on-surface);
+}
+
+.sidebar .nav-link {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+    min-height: 48px;
+    padding: .5rem 1rem;
+    border-radius: var(--md-shape-full);
+    color: var(--md-sys-color-on-surface-variant);
+    font-weight: 500;
+}
+
+.sidebar .nav-link:hover {
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+}
+
+.sidebar .nav-link.active {
+    background: var(--md-sys-color-primary-container);
+    color: var(--md-sys-color-on-primary-container);
+}
+
+@media (min-width: 992px) {
+    .app-shell > .sidebar {
+        flex: 0 0 272px;
+        position: sticky;
+        top: 69px;
+        align-self: flex-start;
+        height: calc(100vh - 69px);
+        overflow-y: auto;
+        border-right: 1px solid var(--md-sys-color-outline-variant) !important;
+    }
+
+    .app-content {
+        padding-inline: 1.5rem;
+    }
+}
+
+/* Offcanvas (mobile) uses the container surface */
+@media (max-width: 991.98px) {
+    .sidebar.offcanvas-lg {
+        background: var(--md-sys-color-surface-container);
+        color: var(--md-sys-color-on-surface);
+        max-width: 85vw;
+    }
+}
+
+/* Bento cards */
+.bento-card {
+    padding: 1.25rem;
+}
+
+section[id] {
+    scroll-margin-top: 85px;
+}
+
+.badge-weight {
+    display: inline-block;
+    padding: .25rem .75rem;
+    border-radius: var(--md-shape-full);
+    background: var(--md-sys-color-secondary-container);
+    color: var(--md-sys-color-on-secondary-container);
+    font: var(--md-type-label);
+}

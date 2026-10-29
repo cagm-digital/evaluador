@@ -1,0 +1,154 @@
+/* Design tokens: Material Design 3 roles, green palette derived from the school crest. */
+
+:root,
+[data-bs-theme="light"] {
+    --md-sys-color-primary: #1b5e20;
+    --md-sys-color-on-primary: #ffffff;
+    --md-sys-color-primary-container: #c8e6c9;
+    --md-sys-color-on-primary-container: #0d3b12;
+    --md-sys-color-secondary: #4a634b;
+    --md-sys-color-secondary-container: #d3e8d1;
+    --md-sys-color-on-secondary-container: #0e1f10;
+    --md-sys-color-surface: #f6faf5;
+    --md-sys-color-surface-container: #eaefe9;
+    --md-sys-color-on-surface: #191c19;
+    --md-sys-color-on-surface-variant: #414941;
+    --md-sys-color-outline: #6b736b;
+    --md-sys-color-outline-variant: #c1c9c0;
+    --md-sys-color-error: #ba1a1a;
+    --md-sys-color-warning: #7a4f00;
+    --md-sys-color-success: #1b5e20;
+
+    --md-glass-bg: rgba(255, 255, 255, .62);
+    --md-glass-border: rgba(27, 94, 32, .18);
+    --md-elevation-1: 0 1px 2px rgba(0, 0, 0, .12), 0 1px 3px 1px rgba(0, 0, 0, .08);
+    --md-elevation-2: 0 1px 2px rgba(0, 0, 0, .12), 0 2px 6px 2px rgba(0, 0, 0, .08);
+}
+
+[data-bs-theme="dark"] {
+    --md-sys-color-primary: #81c784;
+    --md-sys-color-on-primary: #00390c;
+    --md-sys-color-primary-container: #1b5e20;
+    --md-sys-color-on-primary-container: #c8e6c9;
+    --md-sys-color-secondary: #b7ccb5;
+    --md-sys-color-secondary-container: #324b34;
+    --md-sys-color-on-secondary-container: #d3e8d1;
+    --md-sys-color-surface: #101410;
+    --md-sys-color-surface-container: #1c211c;
+    --md-sys-color-on-surface: #e1e3de;
+    --md-sys-color-on-surface-variant: #c1c9bf;
+    --md-sys-color-outline: #8b938a;
+    --md-sys-color-outline-variant: #414941;
+    --md-sys-color-error: #ffb4ab;
+    --md-sys-color-warning: #ffb95c;
+    --md-sys-color-success: #81c784;
+
+    --md-glass-bg: rgba(28, 33, 28, .6);
+    --md-glass-border: rgba(129, 199, 132, .22);
+    --md-elevation-1: 0 1px 2px rgba(0, 0, 0, .5), 0 1px 3px 1px rgba(0, 0, 0, .35);
+    --md-elevation-2: 0 1px 2px rgba(0, 0, 0, .5), 0 2px 6px 2px rgba(0, 0, 0, .35);
+}
+
+/* Shape, spacing and typography scale (M3). */
+:root {
+    --md-shape-sm: 8px;
+    --md-shape-md: 12px;
+    --md-shape-lg: 16px;
+    --md-shape-xl: 28px;
+    --md-shape-full: 999px;
+
+    --md-space-1: .25rem;
+    --md-space-2: .5rem;
+    --md-space-3: 1rem;
+    --md-space-4: 1.5rem;
+    --md-space-5: 2rem;
+
+    --md-type-display: 500 2.75rem/1.15 'Roboto', sans-serif;
+    --md-type-headline: 500 1.75rem/1.25 'Roboto', sans-serif;
+    --md-type-title: 500 1.25rem/1.4 'Roboto', sans-serif;
+    --md-type-body: 400 1rem/1.5 'Roboto', sans-serif;
+    --md-type-label: 500 .875rem/1.4 'Roboto', sans-serif;
+}
+
+/* Bridge tokens into Bootstrap variables. */
+:root,
+[data-bs-theme] {
+    --bs-body-font-family: 'Roboto', system-ui, sans-serif;
+    --bs-body-bg: var(--md-sys-color-surface);
+    --bs-body-color: var(--md-sys-color-on-surface);
+    --bs-secondary-color: var(--md-sys-color-on-surface-variant);
+    --bs-border-color: var(--md-sys-color-outline-variant);
+    --bs-primary: var(--md-sys-color-primary);
+    --bs-link-color: var(--md-sys-color-primary);
+    --bs-link-hover-color: var(--md-sys-color-primary);
+    --bs-border-radius: var(--md-shape-sm);
+    --bs-border-radius-lg: var(--md-shape-lg);
+    --bs-focus-ring-color: color-mix(in srgb, var(--md-sys-color-primary) 45%, transparent);
+}
+
+body {
+    background: var(--md-sys-color-surface);
+    color: var(--md-sys-color-on-surface);
+}
+
+.btn-primary {
+    --bs-btn-bg: var(--md-sys-color-primary);
+    --bs-btn-color: var(--md-sys-color-on-primary);
+    --bs-btn-border-color: var(--md-sys-color-primary);
+    --bs-btn-hover-bg: var(--md-sys-color-primary);
+    --bs-btn-hover-color: var(--md-sys-color-on-primary);
+    --bs-btn-hover-border-color: var(--md-sys-color-primary);
+    --bs-btn-active-bg: var(--md-sys-color-primary);
+    --bs-btn-active-color: var(--md-sys-color-on-primary);
+    --bs-btn-border-radius: var(--md-shape-full);
+}
+
+/* Glassmorphism surface with solid fallback. */
+.glass {
+    background: var(--md-sys-color-surface-container);
+    border: 1px solid var(--md-glass-border);
+    border-radius: var(--md-shape-lg);
+    box-shadow: var(--md-elevation-1);
+}
+
+@supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .glass {
+        background: var(--md-glass-bg);
+        -webkit-backdrop-filter: blur(16px) saturate(140%);
+        backdrop-filter: blur(16px) saturate(140%);
+    }
+}
+
+/* Visible keyboard focus (WCAG 2.4.7). */
+:focus-visible {
+    outline: 3px solid var(--md-sys-color-primary);
+    outline-offset: 2px;
+}
+
+/* Theme toggle: 48px touch target. */
+.theme-toggle {
+    width: 48px;
+    height: 48px;
+    display: inline-grid;
+    place-items: center;
+    border: 1px solid var(--md-sys-color-outline);
+    border-radius: var(--md-shape-full);
+    background: transparent;
+    color: var(--md-sys-color-on-surface);
+}
+
+.theme-toggle:hover {
+    background: var(--md-sys-color-secondary-container);
+}
+
+.material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    vertical-align: middle;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: .01ms !important;
+        transition-duration: .01ms !important;
+    }
+}
