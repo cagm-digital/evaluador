@@ -73,8 +73,30 @@
     background: var(--md-sys-color-secondary-container);
 }
 
+/* Bar uses the hero gradient with white content (same pair as the welcome card). */
+.app-bar {
+    background: var(--md-hero-bg);
+    color: var(--md-hero-fg);
+}
+
+.app-bar .icon-btn {
+    color: var(--md-hero-fg);
+}
+
+.app-bar .icon-btn:hover {
+    background: rgba(255, 255, 255, .18);
+}
+
+.app-bar .text-body-secondary {
+    color: rgba(255, 255, 255, .88) !important;
+}
+
+.app-bar :focus-visible {
+    outline-color: var(--md-hero-fg);
+}
+
 #theme-toggle {
-    border-color: var(--md-sys-color-outline);
+    border-color: rgba(255, 255, 255, .7);
 }
 
 /* Shell: sidebar + content */
@@ -400,4 +422,9 @@ section[id] {
     color: var(--md-sys-color-primary);
     opacity: .1;
     pointer-events: none;
+}
+
+/* Required grade above the maximum: shown, but flagged as out of reach. */
+.result-value-over {
+    color: var(--md-sys-color-error);
 }

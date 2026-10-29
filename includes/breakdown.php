@@ -32,7 +32,7 @@ $total = $result['accumulated'] + $result['required'] * $weights[3];
                         <td class="text-end"><?= (int) round($weights[3] * 100) ?>%</td>
                         <td class="text-end"><?= fmt($result['required'] * $weights[3]) ?></td>
                     <?php else: ?>
-                        <td class="text-end"><?= $result['status'] === 'approved' ? 'Cualquiera' : 'No alcanzable' ?></td>
+                        <td class="text-end"><?php if ($result['status'] === 'approved'): ?>Cualquiera<?php else: ?><?= fmt($result['required']) ?><span class="visually-hidden"> (no alcanzable)</span><?php endif; ?></td>
                         <td class="text-end"><?= (int) round($weights[3] * 100) ?>%</td>
                         <td class="text-end">&mdash;</td>
                     <?php endif; ?>

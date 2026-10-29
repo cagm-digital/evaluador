@@ -19,6 +19,12 @@ $labels = [
     <?php elseif ($result['status'] === 'approved'): ?>
         <p>Con tus notas acumuladas ya alcanzas <?= number_format(PASSING_GRADE, 1) ?>, incluso si sacas <?= number_format(MIN_GRADE, 1) ?> en el período 4.</p>
     <?php else: ?>
-        <p>Incluso con <?= number_format(MAX_GRADE, 1) ?> en el período 4 no llegarías a <?= number_format(PASSING_GRADE, 1) ?>.</p>
+        <?php
+        $bestFinal = $result['accumulated'] + MAX_GRADE * PERIOD_WEIGHTS[3];
+        $shortBy = PASSING_GRADE - $bestFinal;
+        ?>
+        <p class="mb-1">Para llegar a <?= number_format(PASSING_GRADE, 1) ?> necesitarías en el período 4:</p>
+        <p class="result-value result-value-over"><?= fmt($result['required']) ?></p>
+        <p>Pero la nota máxima es <?= number_format(MAX_GRADE, 1) ?>. Aun sacando <?= number_format(MAX_GRADE, 1) ?> tu nota final sería <strong><?= fmt($bestFinal) ?></strong>, es decir, te faltarían <strong><?= fmt($shortBy) ?></strong> para aprobar.</p>
     <?php endif; ?>
 </div>
