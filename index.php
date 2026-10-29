@@ -123,6 +123,7 @@ $passing = number_format(PASSING_GRADE, 1);
 <div class="modal fade" id="formula-modal" tabindex="-1" aria-labelledby="formula-title" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
+            <span class="material-symbols-outlined modal-icon" aria-hidden="true">calculate</span>
             <div class="modal-header">
                 <h2 class="modal-title h5" id="formula-title">¿Cómo se calcula?</h2>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>

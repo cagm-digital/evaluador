@@ -380,3 +380,24 @@ section[id] {
 .footer-chips li:hover {
     transform: translateY(-3px) rotate(-1.5deg);
 }
+
+/* Decorative silhouette in the formula modal. */
+#formula-modal .modal-content {
+    position: relative;
+    overflow: hidden;
+}
+
+#formula-modal .modal-content > :not(.modal-icon) {
+    position: relative;
+}
+
+.modal-icon {
+    position: absolute;
+    right: -1rem;
+    bottom: -2.5rem;
+    font-size: 18rem !important;
+    line-height: 1;
+    color: var(--md-sys-color-primary);
+    opacity: .1;
+    pointer-events: none;
+}
